@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f1e9;
+  --foreground: #20302b;
+  --green: #1d5c4b;
+  --coral: #d86d4e;
+  --muted: #62716b;
 }
 
 @theme inline {
@@ -12,15 +15,176 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 24px;
+}
+
+.hero {
+  background: var(--green);
+  border-radius: 8px;
+  color: #f5f1e9;
+  margin-top: 24px;
+  padding: 64px 28px 56px;
+}
+
+.eyebrow {
+  color: var(--coral);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero .eyebrow {
+  color: #f4b19a;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.7rem, 7vw, 5.5rem);
+  letter-spacing: 0;
+  line-height: 0.98;
+  margin-top: 18px;
+  max-width: 760px;
+}
+
+.hero-copy {
+  color: #d7e0d9;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 24px;
+  max-width: 560px;
+}
+
+.waitlist-form {
+  margin-top: 40px;
+  max-width: 680px;
+}
+
+.waitlist-form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-row input {
+  background: #f5f1e9;
+  border: 0;
+  border-radius: 4px;
+  color: var(--foreground);
+  flex: 1;
+  font: inherit;
+  min-width: 0;
+  padding: 14px 16px;
+}
+
+button {
+  background: var(--coral);
+  border: 0;
+  border-radius: 4px;
+  color: #fff8f0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 14px 18px;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.form-message {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.error {
+  color: #ffc8b8;
+}
+
+.success {
+  background: var(--green);
+  border-radius: 4px;
+  color: #f5f1e9;
+  margin-top: 40px;
+  padding: 16px;
+}
+
+.benefits {
+  padding: 80px 4px 40px;
+}
+
+.benefits h2 {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 1;
+  margin-top: 12px;
+  max-width: 520px;
+}
+
+.benefit-list {
+  border-top: 1px solid #c7cec7;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 48px;
+  padding-top: 24px;
+}
+
+.benefit-list h3 {
+  color: var(--green);
+  font-size: 1.15rem;
+}
+
+.benefit-list p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 10px;
+  max-width: 280px;
+}
+
+@media (max-width: 640px) {
+  main {
+    padding: 12px;
+  }
+
+  .hero {
+    margin-top: 12px;
+    padding: 44px 20px 36px;
+  }
+
+  .form-row,
+  .benefit-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-row button {
+    width: 100%;
+  }
+
+  .benefits {
+    padding: 56px 8px 24px;
+  }
 }
