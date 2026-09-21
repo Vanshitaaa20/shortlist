@@ -25,3 +25,7 @@
 - Used a Firestore batch containing the vote document create and the idea count increment; the rules require the two writes to appear together with `existsAfter()` and `getAfter()`.
 - Each idea card performs one vote-document lookup for the current user. This is simple and explicit, but at scale the per-card reads would need reconsideration.
 - Users can vote on their own ideas; there is no unvote or editing. Deleting an idea leaves its vote subcollection orphaned, which is harmless because clients cannot delete vote documents.
+
+## Tier 2, step 1
+- Added local loading and error state to the ideas list, posting state to the idea form, and request state/error messages to idea cards.
+- Kept retry behavior as a direct refetch using `getDocs`; no listener, library, or abstraction was added.

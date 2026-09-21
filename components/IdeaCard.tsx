@@ -23,6 +23,8 @@ type Props = {
 export default function IdeaCard({ idea, currentUserId, onDeleted, onVoted }: Props) {
   const [hasVoted, setHasVoted] = useState(false);
   const [voting, setVoting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     getDoc(doc(db, "ideas", idea.id, "votes", currentUserId))
@@ -31,16 +33,21 @@ export default function IdeaCard({ idea, currentUserId, onDeleted, onVoted }: Pr
   }, [currentUserId, idea.id]);
 
   async function remove() {
+    setDeleting(true);
+    setError("");
     try {
       await deleteDoc(doc(db, "ideas", idea.id));
       onDeleted();
     } catch {
-      // Firestore rules decide whether this delete is allowed.
+      setError("Could not delete the idea.");
+    } finally {
+      setDeleting(false);
     }
   }
 
   async function vote() {
     setVoting(true);
+    setError("");
     const batch = writeBatch(db);
     const ideaReference = doc(db, "ideas", idea.id);
     const voteReference = doc(db, "ideas", idea.id, "votes", currentUserId);
@@ -53,7 +60,7 @@ export default function IdeaCard({ idea, currentUserId, onDeleted, onVoted }: Pr
       setHasVoted(true);
       onVoted();
     } catch {
-      // The rules reject duplicate or incomplete votes.
+      setError("Could not vote on the idea.");
     } finally {
       setVoting(false);
     }
@@ -67,13 +74,16 @@ export default function IdeaCard({ idea, currentUserId, onDeleted, onVoted }: Pr
         <p className="idea-meta">By {idea.authorName} · {idea.voteCount} votes</p>
       </div>
       <div className="idea-actions">
-        <button type="button" onClick={vote} disabled={hasVoted || voting}>
+        <button type="button" onClick={vote} disabled={hasVoted || voting || deleting}>
           {hasVoted ? "Voted" : voting ? "Voting..." : "Upvote"}
         </button>
         {idea.authorId === currentUserId && (
-          <button className="delete-button" type="button" onClick={remove}>Delete</button>
+          <button className="delete-button" type="button" onClick={remove} disabled={deleting || voting}>
+            {deleting ? "Deleting..." : "Delete"}
+          </button>
         )}
       </div>
+      {error && <p className="form-message error">{error}</p>}
     </article>
   );
 }

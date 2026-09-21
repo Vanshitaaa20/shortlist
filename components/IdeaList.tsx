@@ -12,19 +12,38 @@ type Props = {
 
 export default function IdeaList({ currentUserId, refreshKey }: Props) {
   const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     async function loadIdeas() {
-      const snapshot = await getDocs(query(collection(db, "ideas"), orderBy("createdAt", "desc")));
-      setIdeas(snapshot.docs.map((idea) => ({ id: idea.id, ...idea.data() } as Idea)));
+      setLoading(true);
+      setError(false);
+
+      try {
+        const snapshot = await getDocs(query(collection(db, "ideas"), orderBy("createdAt", "desc")));
+        setIdeas(snapshot.docs.map((idea) => ({ id: idea.id, ...idea.data() } as Idea)));
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    loadIdeas().catch(() => setIdeas([]));
-  }, [refreshKey]);
+    loadIdeas();
+  }, [refreshKey, retryKey]);
 
   return (
     <section className="idea-list">
       <h2>Ideas</h2>
+      {loading && <p>Loading ideas...</p>}
+      {error && (
+        <div className="form-message error">
+          <p>Could not load ideas.</p>
+          <button type="button" onClick={() => setRetryKey((value) => value + 1)}>Try again</button>
+        </div>
+      )}
       {ideas.map((idea) => (
         <IdeaCard
           key={idea.id}
@@ -36,7 +55,7 @@ export default function IdeaList({ currentUserId, refreshKey }: Props) {
             : item))}
         />
       ))}
-      {ideas.length === 0 && <p>No ideas yet. Be the first to post one.</p>}
+      {!loading && !error && ideas.length === 0 && <p>No ideas yet. Be the first to post one.</p>}
     </section>
   );
 }

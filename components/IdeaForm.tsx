@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase-client";
 import { validateIdea } from "@/lib/validation";
+import test from "node:test";
 
 type Props = {
   authorId: string;
@@ -15,6 +16,7 @@ export default function IdeaForm({ authorId, authorName, onCreated }: Props) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [message, setMessage] = useState("");
+  const [posting, setPosting] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,6 +27,7 @@ export default function IdeaForm({ authorId, authorName, onCreated }: Props) {
       return;
     }
 
+    setPosting(true);
     try {
       await addDoc(collection(db, "ideas"), {
         title: title.trim(),
@@ -40,6 +43,8 @@ export default function IdeaForm({ authorId, authorName, onCreated }: Props) {
       onCreated();
     } catch {
       setMessage("Could not create the idea.");
+    } finally {
+      setPosting(false);
     }
   }
 
@@ -50,7 +55,7 @@ export default function IdeaForm({ authorId, authorName, onCreated }: Props) {
       <input id="idea-title" value={title} onChange={(event) => setTitle(event.target.value)} maxLength={100} />
       <label htmlFor="idea-body">What would it help with?</label>
       <textarea id="idea-body" value={body} onChange={(event) => setBody(event.target.value)} maxLength={1000} rows={4} />
-      <button type="submit">Post idea</button>
+      <button type="submit" disabled={posting}>{posting ? "Posting..." : "Post idea"}</button>
       {message && <p className="form-message error">{message}</p>}
     </form>
   );

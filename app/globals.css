@@ -223,6 +223,12 @@ button:disabled {
   margin-top: 8px;
 }
 
+.idea-form button:disabled,
+.idea-actions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .idea-card {
   align-items: start;
   border-top: 1px solid #c7cec7;
@@ -258,6 +264,11 @@ button:disabled {
   display: flex;
   flex: 0 0 auto;
   gap: 8px;
+}
+
+.idea-actions {
+  align-items: start;
+  flex-wrap: wrap;
 }
 
 .benefits {
