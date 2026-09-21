@@ -1,7 +1,6 @@
 import "server-only";
 
 import { initializeApp, getApps, cert, type App } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 function parseServiceAccount() {
@@ -50,7 +49,6 @@ function getAdminApp(): App {
 }
 
 const adminApp = getAdminApp();
-const adminAuth = getAuth(adminApp);
 const adminDb = getFirestore(adminApp);
 
 if (process.env.NEXT_PUBLIC_USE_EMULATORS === "true") {
@@ -58,4 +56,4 @@ if (process.env.NEXT_PUBLIC_USE_EMULATORS === "true") {
   process.env.FIREBASE_AUTH_EMULATOR_HOST ??= "127.0.0.1:9099";
 }
 
-export { adminApp, adminAuth, adminDb };
+export { adminApp, adminDb };
