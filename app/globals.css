@@ -132,6 +132,134 @@ button:disabled {
   padding: 16px;
 }
 
+.auth-page {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.auth-panel {
+  background: var(--green);
+  border-radius: 8px;
+  color: #f5f1e9;
+  max-width: 520px;
+  padding: 48px 32px;
+  width: 100%;
+}
+
+.auth-panel h1 {
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+}
+
+.auth-panel .hero-copy {
+  margin-bottom: 32px;
+}
+
+.board-page {
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 32px 24px 64px;
+  width: 100%;
+}
+
+.board-header {
+  align-items: center;
+  border-bottom: 1px solid #c7cec7;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr auto;
+  padding-bottom: 24px;
+}
+
+.board-header .eyebrow,
+.board-header h1 {
+  grid-column: 1;
+}
+
+.board-header h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1;
+}
+
+.board-header button {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.idea-form,
+.idea-list {
+  margin-top: 32px;
+}
+
+.idea-form {
+  background: #fffaf2;
+  border: 1px solid #d9ddd5;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 24px;
+}
+
+.idea-form h2,
+.idea-list h2 {
+  color: var(--green);
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.idea-form input,
+.idea-form textarea {
+  border: 1px solid #b8c1b9;
+  border-radius: 4px;
+  font: inherit;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.idea-form button {
+  justify-self: start;
+  margin-top: 8px;
+}
+
+.idea-card {
+  align-items: start;
+  border-top: 1px solid #c7cec7;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.idea-card h3 {
+  color: var(--green);
+  font-size: 1.2rem;
+}
+
+.idea-card p {
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.idea-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.delete-button {
+  background: transparent;
+  border: 1px solid var(--coral);
+  color: var(--coral);
+  flex: 0 0 auto;
+}
+
+.idea-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
 .benefits {
   padding: 80px 4px 40px;
 }

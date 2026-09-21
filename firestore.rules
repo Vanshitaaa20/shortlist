@@ -1,6 +1,44 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /ideas/{ideaId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'title', 'body', 'authorId', 'authorName', 'createdAt', 'voteCount'
+        ])
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 100
+        && request.resource.data.body is string
+        && request.resource.data.body.size() >= 1
+        && request.resource.data.body.size() <= 1000
+        && request.resource.data.authorName is string
+        && request.resource.data.authorName.size() <= 80
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.voteCount == 0;
+      allow delete: if request.auth != null
+        && resource.data.authorId == request.auth.uid;
+      allow update: if request.auth != null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['voteCount'])
+        && request.resource.data.voteCount == resource.data.voteCount + 1
+        && !exists(/databases/$(database)/documents/ideas/$(ideaId)/votes/$(request.auth.uid))
+        && existsAfter(/databases/$(database)/documents/ideas/$(ideaId)/votes/$(request.auth.uid));
+    }
+
+    match /ideas/{ideaId}/votes/{voteId} {
+      allow create: if request.auth != null
+        && voteId == request.auth.uid
+        && request.resource.data.keys().hasOnly(['createdAt'])
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/ideas/$(ideaId)).data.voteCount
+          == get(/databases/$(database)/documents/ideas/$(ideaId)).data.voteCount + 1;
+      allow get: if request.auth != null
+        && voteId == request.auth.uid;
+      allow list, update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
