@@ -75,6 +75,7 @@ p {
   border-radius: 18px;
   box-shadow: 0 14px 36px rgba(74, 47, 96, 0.1);
   display: flex;
+  gap: 16px;
   justify-content: space-between;
   margin: 18px auto 0;
   max-width: 1120px;
