@@ -1,8 +1,11 @@
 import WaitlistForm from "@/components/WaitlistForm";
+import TopBar from "@/components/TopBar";
 
 export default function Home() {
   return (
-    <main>
+    <>
+      <TopBar />
+      <main>
       <section className="hero">
         <p className="eyebrow">Threadline</p>
         <h1>Turn scattered feedback into a clear next step.</h1>
@@ -30,6 +33,7 @@ export default function Home() {
           </article>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

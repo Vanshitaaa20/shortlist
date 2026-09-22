@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase-client";
 import { validateIdea } from "@/lib/validation";
-import test from "node:test";
 
 type Props = {
   authorId: string;

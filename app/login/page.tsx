@@ -5,6 +5,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase-client";
 import { useAuth } from "@/components/AuthProvider";
+import TopBar from "@/components/TopBar";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,7 +29,9 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="auth-page">
+    <>
+      <TopBar />
+      <main className="auth-page">
       <section className="auth-panel">
         <p className="eyebrow">Threadline</p>
         <h1>Sign in to your board.</h1>
@@ -40,6 +43,7 @@ export default function LoginPage() {
         )}
         {error && <p className="form-message error">{error}</p>}
       </section>
-    </main>
+      </main>
+    </>
   );
 }
