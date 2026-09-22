@@ -56,18 +56,16 @@ The overall UI overflow fix on mobile relies on `overflow-x: hidden` on the page
 
 ## What I would do with another week
 
-I would rework how vote status is checked. Right now every idea card does its own read to check if the current user already voted, which does not scale well. A better approach would be to keep a small, capped list of voted idea ids on the user's own profile document, so the whole board only needs one extra read instead of one per idea.
+The assignment's optional list includes an admin account that can mark ideas as planned or shipped, and a test around the vote logic. I did not get to either of these, and they would be my first additions.
 
-I would add a lightweight moderation layer. Right now anyone signed in has equal power. I would add a simple admin role, checked in the security rules, that can mark an idea as planned or shipped without being able to edit its content, which the assignment lists as a natural next step.
+For the admin account, I would add a simple admin role, checked in the security rules, that can mark an idea as planned or shipped without being able to edit its title or body, which is exactly what the assignment describes as the natural next step.
+
+For the vote logic, I already wrote automated Firestore rules tests, but a test around the actual UI vote logic, the button state and the count update in IdeaCard, is still missing, and I would add that next.
+
+Beyond the assignment's own optional list, I would also rework how vote status is checked. Right now every idea card does its own read to check if the current user already voted, which does not scale well. A better approach would be to keep a small, capped list of voted idea ids on the user's own profile document, so the whole board only needs one extra read instead of one per idea.
 
 I would move the waitlist rate limiting off in memory state, since that does not survive across serverless instances, and instead track attempts in Firestore itself with a short lived document per email or IP, cleaned up automatically.
-
-I would write automated tests for the plain validation functions and the voting UI logic, not just the security rules. Right now only the rules have real test coverage.
-
-I would set up a small CI pipeline that runs lint, the build, and the rules tests automatically on every push, so a broken rule or a broken build gets caught before it reaches Vercel instead of after.
 
 I would clean up the orphaned votes subcollection problem properly, most likely with a small server action that deletes an idea's votes when the idea itself is deleted, since the client cannot delete a subcollection directly.
 
 I would add a second sign in method, email and password, alongside Google, so the app does not depend on a single provider.
-
-I would add basic monitoring, something simple like logging failed writes and rule denials somewhere I can actually see them, instead of only finding out about problems by testing manually.
